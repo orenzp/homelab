@@ -1,0 +1,15 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: home-k3s
+  labels:
+    app: gitops
+    name: home-k3s
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: gitops-test
+  labels:
+    app: gitops
+    name: gitops-test
