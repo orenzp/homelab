@@ -13,3 +13,11 @@ metadata:
   labels:
     app: gitops
     name: gitops-test
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: metallb-system
+  labels:
+    app: gitops
+    name: metallb
