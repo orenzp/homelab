@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: metallb-system
   name: config
+  namespace: metallb-system
 data:
   config: |
     address-pools:
-    - name: addresspool
+    - name: staging
       protocol: layer2
       addresses:
-      - 192.168.1.25-192.168.1.50
+      - 192.186.1.51-192.168.1.71
