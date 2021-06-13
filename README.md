@@ -1,8 +1,55 @@
-# gitops
+# Describtion
+
+
+# Architacture
+
+- fluxcd
+- Rancher K3S
+- Github Actions
+- 
+
+# Bootstraping Cluster
+
+## Production
+
+
+```bash
+flux check --pre
+
+flux bootstrap github \
+    --context=homeK3S \
+    --owner={$GITHUB_USER} \
+    --repository={$GITHUB_REPO} \
+    --branch=main \
+    --personal \
+    --path=./clusters/production
+```
+
+## Staging
+
+```bash
+kind create cluster --name staging
+```
+
+```bash
+flux check --pre
+
+flux bootstrap github \
+    --context=kind-staging \
+    --owner={$GITHUB_USER} \
+    --repository={$GITHUB_REPO} \
+    --branch=staging \
+    --personal \
+    --path=./clusters/staging
+```
+
+# CICD Github workflow
+
+
 
 # Setup Ubuntu Servers
 
-kubernetes ip range"
+kubernetes ip range" (metalLB)
 192.168.1.25 to 50
 
 K8S01 - 192.168.1.11
@@ -58,11 +105,10 @@ flux check --pre
 flux bootstrap github \
   --owner=$GITHUB_USER \
   --repository=gitops \
-  --branch=main \
+  --branch=wip \
   --path=./ \
   --personal
 ```
-
 
 Deploy podinfo application:
 
@@ -83,4 +129,17 @@ flux create kustomization podinfo \
   --validation=client \
   --interval=5m \
   --export > ./gitops-test/podinfo-kustomize.yaml
+```
+
+kc 
+## MetalLB
+kubectl edit configmap -n kube-system kube-proxy
+Set stricARP to true
+
+```
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+mode: "ipvs"
+ipvs:
+  strictARP: true
 ```
