@@ -11,7 +11,7 @@ spec:
   path: ./infrastructure/staging
   prune: true
   validation: client
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-gpg
+  # decryption:
+  #   provider: sops
+  #   secretRef:
+  #     name: sops-gpg
