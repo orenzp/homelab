@@ -4,3 +4,4 @@ resources:
 - metallb-configmap.yaml
 - metallb.yaml
 - namespaces.yaml
+- local.storageclass.yaml
