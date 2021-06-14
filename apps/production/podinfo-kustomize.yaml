@@ -7,7 +7,5 @@ metadata:
 spec:
   interval: 5m0s
   prune: true
-  sourceRef:
-    kind: GitRepository
-    name: podinfo
-  validation: client
+  path: ./kustomize/production
+
