@@ -1,11 +1,9 @@
 name: test
 
 on:
-  workflow_dispatch:
   pull_request:
-  push:
-    branches: [ '*' ]
-    tags-ignore: [ '*' ]
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   manifests:
@@ -16,4 +14,4 @@ jobs:
       - name: Setup tools
         uses: ./.github/actions/tools
       - name: Validate manifests
-        run: ./scripts/validate.sh
+        run: ./.github/scripts/validate.sh
