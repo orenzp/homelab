@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pihole
-  namespace: home-k3s
+  namespace: pihole
   labels:
     app: pihole
 spec:

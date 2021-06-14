@@ -4,3 +4,6 @@ resources:
 - podinfo-kustomize.yaml
 - podinfo-source.yaml
 - namespaces.yaml
+- pihole-deploy.yaml
+- pihole-pvc.yaml
+- pihole-svc.yaml
