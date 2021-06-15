@@ -1,0 +1,17 @@
+name: test
+
+on:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  manifests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup tools
+        uses: ./.github/actions/tools
+      - name: Validate manifests
+        run: ./.github/scripts/validate.sh

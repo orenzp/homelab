@@ -7,7 +7,7 @@ metadata:
 spec:
   interval: 1m0s
   ref:
-    branch: main
+    branch: WIP
   secretRef:
     name: flux-system
   url: ssh://git@github.com/orenzp/gitops
@@ -19,7 +19,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./
+  path: ./clusters/production
   prune: true
   sourceRef:
     kind: GitRepository

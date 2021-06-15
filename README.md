@@ -64,8 +64,7 @@ flux bootstrap github \
 
 # CICD Github workflow
 
-export GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxx
-export GITHUB_USER=orenzp
+
 
 flux check --pre
 
@@ -98,9 +97,14 @@ flux create kustomization podinfo \
   --export > ./gitops-test/podinfo-kustomize.yaml
 ```
 
-kc 
-
-## MetalLB
-
 kubectl edit configmap -n kube-system kube-proxy
 Set stricARP to true
+
+```
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+mode: "ipvs"
+ipvs:
+  strictARP: true
+```
+
