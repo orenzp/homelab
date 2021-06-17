@@ -27,6 +27,9 @@ spec:
   install:
     remediation:
       retries: 3
+  values:
+    persistence:
+      reclaimPolicy: Retain
 ---
 kind: Service
 apiVersion: v1
