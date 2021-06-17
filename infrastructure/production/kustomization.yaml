@@ -4,3 +4,4 @@ bases:
 - ../base
 patchesStrategicMerge:
 - metallb-configmap.yaml
+- helm-longhorn-svc.yaml.yaml
