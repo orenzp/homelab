@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: longhorn-ui
+  name: longhorn-metallb
+  namespace: longhorn-system
+  annotations:
+    metallb.universe.tf/address-pool: production
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.186.1.52
