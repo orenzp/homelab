@@ -9,4 +9,4 @@ data:
     - name: staging
       protocol: layer2
       addresses:
-      - 192.186.1.51-192.168.1.71
+      - 192.168.1.51-192.168.1.71
