@@ -5,3 +5,4 @@ resources:
 - metallb.yaml
 - namespaces.yaml
 - local.storageclass.yaml
+- helm-longhorn.yaml

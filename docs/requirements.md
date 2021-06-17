@@ -2,7 +2,9 @@
 # Setup Ubuntu Servers
 
 kubernetes ip range" (metalLB)
-192.168.1.25 to 50
+192.168.1.25 to 50 - Production
+192.168.1.51 to 76 - Staging
+
 
 K8S01 - 192.168.1.11
 K8S02 - 192.168.1.12

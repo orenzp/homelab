@@ -1,0 +1,51 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: longhorn
+  namespace: flux-system
+spec:
+  url: https://charts.longhorn.io/
+  interval: 15m
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: longhorn
+  namespace: longhorn-system
+spec:
+  releaseName: longhorn
+  targetNamespace: longhorn-system
+  chart:
+    spec:
+      chart: longhorn
+      sourceRef:
+        kind: HelmRepository
+        name: longhorn
+        namespace: flux-system
+      version: "1.1.1"
+  interval: 1h0m0s
+  install:
+    remediation:
+      retries: 3
+  values:
+    persistence:
+      reclaimPolicy: Retain
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: longhorn-ui
+  name: longhorn-metallb
+  namespace: longhorn-system
+  annotations:
+    metallb.universe.tf/allow-shared-ip: utils
+spec:
+  type: LoadBalancer
+  selector:
+    app: longhorn-ui
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+    nodePort: null
