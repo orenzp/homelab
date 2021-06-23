@@ -26,14 +26,14 @@ spec:
         - name: WEBPASSWORD
           value: "secret"
         volumeMounts:
-        - name: pihole-local-etc-volume
+        - name: pihole-etc
           mountPath: "/etc/pihole"
-        - name: pihole-local-dnsmasq-volume
+        - name: pihole-dnsmasq
           mountPath: "/etc/dnsmasq.d"
       volumes:
-      - name: pihole-local-etc-volume
+      - name: pihole-etc
         persistentVolumeClaim:
-          claimName: pihole-local-etc-claim
-      - name: pihole-local-dnsmasq-volume
+          claimName: pihole-etc
+      - name: pihole-dnsmasq
         persistentVolumeClaim:
-          claimName: pihole-local-dnsmasq-claim
+          claimName: pihole-dnsmasq
