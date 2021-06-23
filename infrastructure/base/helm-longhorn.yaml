@@ -30,6 +30,7 @@ spec:
   values:
     persistence:
       reclaimPolicy: Retain
+      # numberOfReplicas 
 ---
 kind: Service
 apiVersion: v1

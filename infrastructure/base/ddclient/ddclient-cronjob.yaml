@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ddclient
+  namespace: ddclient
+  labels:
+    app: ddclient
+spec:
+  schedule: "30 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+            - name: ddclient-config-file
+              secret:
+                secretName: ddclient-secret
+          containers:
+          - name: ddclient
+            image: orenzp/ddclient:latest
+            imagePullPolicy: IfNotPresent
+            volumeMounts:
+              - mountPath: /etc/ddclient
+                name: ddclient-config-file
+            command:
+            - /usr/bin/ddclient
+          restartPolicy: OnFailure
