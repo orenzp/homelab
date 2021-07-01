@@ -4,7 +4,5 @@ resources:
 - namespaces.yaml
 - helm-longhorn.yaml
 - sealedsecrets-controller.yaml
-- ./ddclient/ddclient-cronjob.yaml
-- ./ddclient/ddclient-sealedsecret.yaml
 - ./metallb/metallb-configmap.yaml
 - ./metallb/metallb.yaml
