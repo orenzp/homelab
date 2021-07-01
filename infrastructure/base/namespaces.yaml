@@ -1,6 +1,11 @@
 apiVersion: v1
 kind: Namespace
 metadata:
+  name: my-system
+---
+apiVersion: v1
+kind: Namespace
+metadata:
   name: metallb-system
 ---
 apiVersion: v1
