@@ -1,4 +1,4 @@
-export GITHUB_TOKEN=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
+export GITHUB_TOKEN=XXXXXXXXXXX
 export GITHUB_USER=orenzp
 export GITHUB_REPO='gitops'
 
