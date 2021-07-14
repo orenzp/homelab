@@ -1,110 +1,34 @@
-[![test](https://github.com/orenzp/gitops/actions/workflows/test.yaml/badge.svg)](https://github.com/orenzp/gitops/actions/workflows/test.yaml) - [![e2e](https://github.com/orenzp/gitops/actions/workflows/e2e.yaml/badge.svg)](https://github.com/orenzp/gitops/actions/workflows/e2e.yaml)
-
 # Description
+Last year my wife came to me a said: "Oren you should start a project so you will have something to do outside of work", So I created this repository :grin:
+
+This repo holds all the configuration and documentation that is needed to set up my self-hosting home Kubernetes cluster on raspberry pie boards.
 
 ## Project Goals
 
-- The goal of the project is to fully automate my personal hosting environment at home. 
-
-- To have the entire state of the environment declared in GIT 
+- The goal of the project is to fully automate my hosting environment at home. 
+- To have the entire state of the environment declared in GIT
+- Learn and implement the latest DevOps tools and methods.
 
 # Architecture
 
 - **Infrastructure**
-  - [FluxCD - GitOps toolkit](https://fluxcd.io/)
-  - [K3SUP🚀](https://github.com/alexellis/k3sup)
-  - [GitHub Actions](https://github.com/features/actions) 
-  - [METALLB - Layer 2 load balancer](https://metallb.universe.tf/)
+  - [FluxCD - GitOps Toolkit](https://fluxcd.io/)
+  - [K3S - Kubernetes Distro](https://k3s.io/)
+  - [METALLB - Layer 2 LB](https://metallb.universe.tf/)
+
 - **Applications**
-  - [podinfo: Demo app](https://github.com/stefanprodan/podinfo)
-  - [Home Assistant](https://www.home-assistant.io/)
-  - [Pi-Hole](https://pi-hole.net/)
-  - [Plex](https://www.plex.tv/)
+  - [Podinfo - Demo app](https://github.com/stefanprodan/podinfo)
+  - [Home Assistant - Home Automation](https://www.home-assistant.io/)
+  - [Pi-Hole - DNS Ad Blocker](https://pi-hole.net/)
+  - [Plex - Media Center](https://www.plex.tv/)
 
+## Continues Integration Pipeline [![test](https://github.com/orenzp/gitops/actions/workflows/test.yaml/badge.svg)](https://github.com/orenzp/gitops/actions/workflows/test.yaml) --- [![e2e](https://github.com/orenzp/gitops/actions/workflows/e2e.yaml/badge.svg)](https://github.com/orenzp/gitops/actions/workflows/e2e.yaml)
+I use Github Action to enable a Continues Integration solution to check the new code and config that I plan to represent to the system.
 
-
-# Requirements
-
-
+  - [GitHub Actions](https://github.com/features/actions) 
 
 # Bootstrapping
+The requirements to bootstrapping the Kubernetes Cluster on my raspberry pies. The bootstrap process is divided into two steps. First bootstrap the cluster, then deploy the FluxCD Controller to deploy all my Kubernetes Resources.
 
-
-## Production
-
-```bash
-flux check --pre
-
-flux bootstrap github \
-    --context=homeK3S \
-    --owner={$GITHUB_USER} \
-    --repository={$GITHUB_REPO} \
-    --branch=main \
-    --personal \
-    --path=./clusters/production
-```
-
-## Staging
-
-```bash
-kind create cluster --name staging
-```
-
-```bash
-flux check --pre
-
-flux bootstrap github \
-    --context=kind-staging \
-    --owner={$GITHUB_USER} \
-    --repository={$GITHUB_REPO} \
-    --branch=staging \
-    --personal \
-    --path=./clusters/staging
-```
-
-# CICD Github workflow
-
-
-
-flux check --pre
-
-```
-flux bootstrap github \
-  --owner=$GITHUB_USER \
-  --repository=gitops \
-  --branch=wip \
-  --path=./ \
-  --personal
-```
-
-Deploy podinfo application:
-
-```
-flux create source git podinfo \
-  --url=https://github.com/stefanprodan/podinfo \
-  --branch=master \
-  --interval=30s \
-  --export > ./gitops-test/podinfo-source.yaml
-```
-
-```
-flux create kustomization podinfo \
-  --source=podinfo \
-  --path="./kustomize" \
-  --prune=true \
-  --validation=client \
-  --interval=5m \
-  --export > ./gitops-test/podinfo-kustomize.yaml
-```
-
-kubectl edit configmap -n kube-system kube-proxy
-Set stricARP to true
-
-```
-apiVersion: kubeproxy.config.k8s.io/v1alpha1
-kind: KubeProxyConfiguration
-mode: "ipvs"
-ipvs:
-  strictARP: true
-```
-
+- [Cluster Bootstrap](docs/cluster_bootstrap.md)
+- [GitOps Bootstrap](docs/gitops_bootstrap.md)
