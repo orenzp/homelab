@@ -24,8 +24,9 @@ This repo holds all the configuration and documentation that is needed to set up
   - [Pi-Hole - DNS Ad Blocker](https://pi-hole.net/)
   - [Plex - Media Center](https://www.plex.tv/)
   - [WireGuard VPN](https://www.wireguard.com/)
-
-![K8S Diagram](/docs/HomeLab.png)
+<p align="center">
+<td align="left"><img src="/docs/HomeLab.png" width="400" /></td>
+</p>
 
 ## Continues Integration Pipeline [![test](https://github.com/orenzp/gitops/actions/workflows/test.yaml/badge.svg)](https://github.com/orenzp/gitops/actions/workflows/test.yaml) --- [![e2e](https://github.com/orenzp/gitops/actions/workflows/e2e.yaml/badge.svg)](https://github.com/orenzp/gitops/actions/workflows/e2e.yaml)
 I use Github Action to enable a Continues Integration solution to check the new code and config that I plan to represent to the system.
