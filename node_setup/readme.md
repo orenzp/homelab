@@ -10,6 +10,8 @@ After writing the image, your SD card will have two partitions: one for boot and
 Mount the boot partition (the smaller one) to your computer. You can do this by inserting the SD card into your computer and finding the mounted partition. The boot partition is usually named "boot" on Ubuntu images.
 Configure the Static IP Address:
 
+# Configure network setting
+
 Within the mounted boot partition, locate and open the network-config file. If it's not present, create the file.
 Edit the network-config file to specify your static IP configuration. You can use a text editor like Nano or Notepad.
 Example network-config:
@@ -22,6 +24,36 @@ Example network-config:
       addresses: [8.8.8.8, 8.8.4.4]  # Use your preferred DNS servers
 ```
 Customize the IP address, subnet mask, gateway, and DNS addresses according to your network.
+
+# Configure SSH:
+
+Within the mounted root partition, navigate to the /etc/ssh directory.
+
+Create a file named ssh in this directory. This will enable SSH on the first boot.
+
+For example, on a Unix-based system, you can run the following command to create the file:
+
+bash
+Copy code
+touch /path/to/mounted/root/etc/ssh/ssh
+
+# Set the Admin Password:
+
+If you want to set the admin password, you need to modify the password hash for the 'ubuntu' user in the /etc/shadow file.
+
+To set the password, you should generate a password hash using a tool like mkpasswd or openssl.
+
+Here's an example of how to use mkpasswd to generate a password hash and set it for the 'ubuntu' user:
+
+bash
+Copy code
+mkpasswd -m sha-512
+You will be prompted to enter the desired password. After entering the password, mkpasswd will display the password hash. Copy the generated hash.
+
+Open the /etc/shadow file in a text editor within the mounted root partition and find the line for the 'ubuntu' user.
+
+Replace the existing password hash with the one you generated.
+
 
 # Eject the SD Card:
 
