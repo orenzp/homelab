@@ -20,8 +20,9 @@ Example network-config:
     gateway4: 192.168.1.1  # Set your router's IP address
     nameservers:
       addresses: [8.8.8.8, 8.8.4.4]  # Use your preferred DNS servers
-Customize the IP address, subnet mask, gateway, and DNS addresses according to your network.
 ```
+Customize the IP address, subnet mask, gateway, and DNS addresses according to your network.
+
 # Eject the SD Card:
 
 Safely eject the SD card from your computer.
