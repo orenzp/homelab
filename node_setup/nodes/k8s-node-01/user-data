@@ -1,20 +1,40 @@
 #cloud-config
-ssh_pwauth: true
+ssh_pwauth: false
 users:
   - name: ubuntu
     sudo: ALL=(ALL) NOPASSWD:ALL
-    lock_passwd: false
-    passwd: "$6$rounds=4096$six.random.bits$YVp6C.N0.M.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6"
+    lock_passwd: true
     shell: /bin/bash
     ssh_authorized_keys:
-      - ssh-rsa AAAAB3Nza... # REPLACE WITH YOUR SSH KEY
+      - ssh-rsa AAAAB3Nza... # REPLACE WITH YOUR KEY
 
 hostname: k8s-node-01
 manage_etc_hosts: true
 
 package_update: true
-package_upgrade: true
 packages:
   - curl
   - vim
   - git
+  - open-iscsi
+  - nfs-common
+  - iptables
+
+write_files:
+  - path: /etc/modules-load.d/k3s.conf
+    content: |
+      overlay
+      br_netfilter
+  - path: /etc/sysctl.d/k3s.conf
+    content: |
+      net.bridge.bridge-nf-call-iptables = 1
+      net.ipv4.ip_forward = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+
+runcmd:
+  - sed -i 's/$/ cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1/' /boot/firmware/cmdline.txt
+  - sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+  - swapoff -a
+  - systemctl disable --now wpa_supplicant
+  - systemctl disable --now atd
+  - sysctl --system
