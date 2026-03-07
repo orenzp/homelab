@@ -17,6 +17,9 @@ This repo holds all the configuration and documentation that is needed to set up
   - [K3S - Kubernetes Distro](https://k3s.io/)
   - [METALLB - Layer 2 LB](https://metallb.universe.tf/)
   - [LongHorn - Distributed storage for K8S](https://rancher.com/products/longhorn/)
+  - [Ingress Nginx - Ingress Controller](https://kubernetes.github.io/ingress-nginx/)
+  - [Cert-Manager - SSL Certificate Management](https://cert-manager.io/)
+  - [Kube-Prometheus-Stack - Monitoring & Alerting](https://github.com/prometheus-community/helm-charts)
 
 - **Applications**
   - [Podinfo - Demo app](https://github.com/stefanprodan/podinfo)

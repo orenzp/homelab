@@ -5,6 +5,4 @@ resources:
 - wireguard.yaml
 - ./podinfo/podinfo-kustomize.yaml
 - ./podinfo/podinfo-source.yaml
-- ./pihole/pihole-deploy.yaml
-- ./pihole/pihole-pvc.yaml
-- ./pihole/pihole-svc.yaml
+- ./pihole/pihole-helm.yaml

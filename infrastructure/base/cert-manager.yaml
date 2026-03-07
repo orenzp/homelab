@@ -1,0 +1,32 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: jetstack
+  namespace: flux-system
+spec:
+  url: https://charts.jetstack.io
+  interval: 1h
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: cert-manager
+  namespace: flux-system
+spec:
+  releaseName: cert-manager
+  targetNamespace: cert-manager
+  chart:
+    spec:
+      chart: cert-manager
+      sourceRef:
+        kind: HelmRepository
+        name: jetstack
+        namespace: flux-system
+      version: "v1.13.x"
+  interval: 1h
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  values:
+    installCRDs: true

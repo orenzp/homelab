@@ -4,5 +4,8 @@ resources:
 - namespaces.yaml
 - helm-longhorn.yaml
 - sealedsecrets-controller.yaml
+- ingress-nginx.yaml
+- cert-manager.yaml
+- monitoring.yaml
 - ./metallb/metallb-configmap.yaml
 - ./metallb/metallb.yaml

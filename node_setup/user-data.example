@@ -1,0 +1,23 @@
+#cloud-config
+ssh_pwauth: true
+users:
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    lock_passwd: false
+    passwd: "$6$rounds=4096$six.random.bits$YVp6C.N0.M.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6" # Default: "ubuntu" (Change this!)
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3Nza... # Add your public SSH key here
+
+hostname: k8s-node-01 # Change this per node
+manage_etc_hosts: true
+
+package_update: true
+package_upgrade: true
+packages:
+  - curl
+  - vim
+  - git
+
+runcmd:
+  - [ touch, /etc/cloud/cloud-init.disabled ] # Optional: disable cloud-init after first run
