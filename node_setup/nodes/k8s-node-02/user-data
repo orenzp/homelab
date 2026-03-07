@@ -1,0 +1,20 @@
+#cloud-config
+ssh_pwauth: true
+users:
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    lock_passwd: false
+    passwd: "$6$rounds=4096$six.random.bits$YVp6C.N0.M.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6V.6"
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3Nza... # REPLACE WITH YOUR SSH KEY
+
+hostname: k8s-node-02
+manage_etc_hosts: true
+
+package_update: true
+package_upgrade: true
+packages:
+  - curl
+  - vim
+  - git
