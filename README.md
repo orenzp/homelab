@@ -9,8 +9,43 @@ This repo holds all the configuration and documentation that is needed to set up
 - The goal of the project is to fully automate my hosting environment at home. 
 - To have the entire state of the environment declared in GIT
 - Learn and implement the latest DevOps tools and methods.
+## Architecture
 
-# Architecture
+```mermaid
+graph TD
+    subgraph Nodes [Physical Layer: Raspberry Pi 4 4GB]
+        K3S01[k8s-master-01<br/>192.168.1.11]
+        K3S02[k8s-node-01<br/>192.168.1.12]
+        K3S03[k8s-node-02<br/>192.168.1.13]
+        SSD[(250GB SSD SATA)] --- K3S01
+    end
+
+    subgraph Cluster [Kubernetes Layer: K3s Cluster]
+        Flux[FluxCD GitOps]
+        Sealed[Sealed Secrets]
+        Prom[Prometheus Operator]
+        Metal[MetalLB L2 LB]
+        Longhorn[Longhorn Storage]
+    end
+
+    subgraph Apps [Applications]
+        HA[Home Assistant]
+        PH[Pi-Hole]
+        WG[WireGuard]
+        PI[Podinfo]
+    end
+
+    Nodes --> Cluster
+    Flux -.-> Cluster
+    Cluster --> Metal
+    Cluster --> Longhorn
+    Longhorn --> HA
+    Longhorn --> PH
+    Metal --> Ingress[Ingress Nginx]
+    Ingress --> Apps
+```
+
+### Stack Components
 
 - **Infrastructure**
   - [FluxCD - GitOps Toolkit](https://fluxcd.io/)
@@ -27,9 +62,6 @@ This repo holds all the configuration and documentation that is needed to set up
   - [Pi-Hole - DNS Ad Blocker](https://pi-hole.net/)
   - [Plex - Media Center](https://www.plex.tv/)
   - [WireGuard VPN](https://www.wireguard.com/)
-<p align="center">
-<td align="left"><img src="/docs/HomeLab.png" width="400" /></td>
-</p>
 
 ## Continues Integration Pipeline [![test](https://github.com/orenzp/gitops/actions/workflows/test.yaml/badge.svg)](https://github.com/orenzp/gitops/actions/workflows/test.yaml) --- [![e2e](https://github.com/orenzp/gitops/actions/workflows/e2e.yaml/badge.svg)](https://github.com/orenzp/gitops/actions/workflows/e2e.yaml)
 I use Github Action to enable a Continues Integration solution to check the new code and config that I plan to represent to the system.
