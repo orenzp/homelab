@@ -1,0 +1,52 @@
+# Use a lightweight Debian-based image
+FROM debian:bookworm-slim
+
+# Prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install common dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    unzip \
+    jq \
+    python3 \
+    python3-pip \
+    python3-venv \
+    sshpass \
+    openssh-client \
+    gnupg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Ansible
+RUN pip3 install --break-system-packages ansible
+
+# Install GitHub CLI
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+    && apt-get update \
+    && apt-get install gh -y
+
+# Install Bitwarden CLI (bw)
+RUN curl -L "https://vault.bitwarden.com/download/?app=cli&platform=linux" -o bw.zip \
+    && unzip bw.zip -d /usr/local/bin \
+    && chmod +x /usr/local/bin/bw \
+    && rm bw.zip
+
+# Install Helm
+RUN curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+# Install kubectl
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" \
+    && install -m 0755 kubectl /usr/local/bin/kubectl \
+    && rm kubectl
+
+# Install Flux CLI
+RUN curl -s https://fluxcd.io/install.sh | bash
+
+# Set working directory
+WORKDIR /workspace
+
+# Default command
+CMD ["/bin/bash"]
