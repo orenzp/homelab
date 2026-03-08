@@ -41,3 +41,27 @@ The requirements to bootstrapping the Kubernetes Cluster on my raspberry pies. T
 
 - [Cluster Bootstrap](docs/cluster_bootstrap.md)
 - [GitOps Bootstrap](docs/gitops_bootstrap.md)
+
+## Automated Setup (Ansible + Bitwarden)
+A fully automated setup is available to provision the nodes, install K3s, and bootstrap FluxCD.
+
+### 1. Provision Nodes
+Flash your SD cards and follow the [Node Setup Guide](node_setup/readme.md) to enable **root login** with a preset password and static IP.
+
+### 2. Login to Bitwarden
+Ensure the Bitwarden CLI (`bw`) is installed and authenticated on your machine:
+```bash
+bw login
+export BW_SESSION=$(bw unlock --raw)
+```
+
+### 3. Run the Ansible Playbook
+Update `ansible/hosts.ini` with your nodes' IPs and then run:
+```bash
+ansible-playbook -i ansible/hosts.ini ansible/site.yml
+```
+
+This single command will:
+1.  **Prepare nodes**: Disable swap, enable cgroups, and install K8s dependencies.
+2.  **Install K3s**: Deploy the master and join all workers.
+3.  **Bootstrap FluxCD**: Fetch your GitHub token from Bitwarden and initialize GitOps on the cluster.

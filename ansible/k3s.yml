@@ -1,9 +1,49 @@
 ---
-- hosts: "masters"
-  remote_user: ubuntu
+- hosts: k3s_cluster
+  remote_user: root
   become: yes
   tasks:
-    - name: Install K3s on Master
+    - name: Disable swap immediately
+      command: swapoff -a
+      when: ansible_swaptotal_mb > 0
+
+    - name: Remove swap from fstab
+      replace:
+        path: /etc/fstab
+        regexp: '^([^#].*?\sswap\s+.*)$'
+        replace: '# \1'
+
+    - name: Install required packages
+      apt:
+        name:
+          - curl
+          - git
+          - open-iscsi
+          - nfs-common
+          - iptables
+        state: present
+        update_cache: yes
+
+    - name: Enable IPv4 forwarding
+      sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        state: present
+
+    - name: Enable bridge-nf-call-iptables
+      sysctl:
+        name: "{{ item }}"
+        value: '1'
+        state: present
+      loop:
+        - net.bridge.bridge-nf-call-iptables
+        - net.bridge.bridge-nf-call-ip6tables
+
+- hosts: masters
+  remote_user: root
+  become: yes
+  tasks:
+    - name: Install K3s Master
       shell: |
         curl -sfL https://get.k3s.io | sh -s - server \
         --disable traefik \
@@ -15,8 +55,8 @@
       command: cat /var/lib/rancher/k3s/server/node-token
       register: node_token
 
-- hosts: "workers"
-  remote_user: ubuntu
+- hosts: workers
+  remote_user: root
   become: yes
   tasks:
     - name: Join K3s Workers

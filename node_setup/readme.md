@@ -1,38 +1,32 @@
 # Raspberry Pi Node Setup (Automated)
 
-This guide explains how to quickly provision a new Raspberry Pi node by pre-configuring it directly on the SD card before the first boot. This method uses **Cloud-Init**, which is natively supported by official Ubuntu Server images.
+This guide explains how to provision a new Raspberry Pi node using **Cloud-Init** on the Ubuntu Server (64-bit) image.
 
 ## 1. Flash the SD Card
-1.  Download the **Ubuntu Server (64-bit)** image for Raspberry Pi.
-2.  Use [Raspberry Pi Imager](https://www.raspberrypi.com/software/) or [BalenaEtcher](https://www.balena.io/etcher/) to flash the image.
-3.  **Do not eject the SD card yet!**
+1.  Flash the **Ubuntu Server (64-bit)** image for Raspberry Pi.
+2.  **Keep the SD card inserted!** A partition named `system-boot` will appear.
 
 ## 2. Pre-Configure via Boot Partition
-Once flashed, a small FAT32 partition named `system-boot` will appear on your computer. This partition is accessible on Windows, macOS, and Linux.
+Copy and rename the example files from this repository to the `system-boot` partition:
 
-### Step A: Configure Hostname and User
-1.  Copy `user-data.example` from this repo to the `system-boot` partition and rename it to **`user-data`**.
+### Step A: Configure Hostname and Root Password
+1.  Copy `user-data.example` to `system-boot/user-data`.
 2.  Edit `user-data`:
-    *   Change `hostname: k8s-node-01` to your desired name.
-    *   Add your public SSH key under `ssh_authorized_keys`.
-    *   (Optional) Update the hashed password.
+    *   Change `hostname: k8s-node-xx` to your desired name (e.g., `k8s-master-01`).
+    *   Update `PLACEHOLDER_PASSWORD` under `chpasswd` for the **root** user.
+    *   (Recommended) Add your public SSH key under the `ubuntu` user for fallback access.
 
 ### Step B: Configure Static IP
-1.  Copy `network-config.example` from this repo to the `system-boot` partition and rename it to **`network-config`**.
+1.  Copy `network-config.example` to `system-boot/network-config`.
 2.  Edit `network-config`:
-    *   Change the `addresses` to your desired static IP (e.g., `192.168.1.11/24`).
+    *   Set the `addresses` to your desired static IP (e.g., `192.168.1.11/24`).
     *   Ensure the `gateway4` matches your router's IP.
 
 ## 3. First Boot
-1.  Safely eject the SD card and insert it into the Raspberry Pi.
-2.  Connect an Ethernet cable and power it on.
-3.  Wait 2-3 minutes for the initial setup to complete.
-4.  You can now SSH into your node:
-    ```bash
-    ssh ubuntu@<configured-ip>
-    ```
+1.  Insert the SD card into the Raspberry Pi and power it on.
+2.  Wait 2-3 minutes for the setup to complete.
+3.  Verify connectivity: `ssh root@<configured-ip>`.
 
 ## Why this is better?
-*   **No Linux needed:** You can configure everything on a Windows or Mac since the boot partition is FAT32.
-*   **Automated:** No need to manually edit `/etc/shadow` or create empty `ssh` files; cloud-init handles it all.
-*   **Scalable:** Just copy-paste these two files to every new SD card you flash.
+*   **Root Enabled**: Ansible can connect as `root` immediately with the preset password.
+*   **K3s Ready**: Cloud-init automatically enables `cgroups`, disables `swap`, and installs dependencies like `open-iscsi` and `nfs-common`.

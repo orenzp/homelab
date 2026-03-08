@@ -1,0 +1,6 @@
+---
+- name: Prepare and Install K3s Cluster
+  import_playbook: k3s.yml
+
+- name: Bootstrap FluxCD for GitOps
+  import_playbook: flux-bootstrap.yml

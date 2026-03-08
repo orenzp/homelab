@@ -1,0 +1,33 @@
+---
+- hosts: masters
+  remote_user: root
+  become: yes
+  vars:
+    github_user: "orenzp"
+    github_repo: "homelab"
+    target_path: "./clusters/production"
+
+  tasks:
+    - name: Fetch GitHub Token from Bitwarden
+      shell: "bw get item github_api_token | jq -r '.login.password'"
+      register: bw_token
+      delegate_to: localhost
+      changed_when: false
+      failed_when: bw_token.stdout == ""
+
+    - name: Ensure Flux CLI is installed
+      shell: "curl -s https://fluxcd.io/install.sh | sudo bash"
+      args:
+        creates: /usr/local/bin/flux
+
+    - name: Bootstrap FluxCD
+      shell: |
+        export GITHUB_TOKEN={{ bw_token.stdout }}
+        flux bootstrap github \
+          --owner={{ github_user }} \
+          --repository={{ github_repo }} \
+          --branch=production \
+          --path={{ target_path }} \
+          --personal
+      register: flux_output
+      changed_when: "'all good' in flux_output.stdout"

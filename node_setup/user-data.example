@@ -1,5 +1,11 @@
 #cloud-config
-ssh_pwauth: false # Security: Disable password login, use SSH keys only
+ssh_pwauth: true
+disable_root: false
+chpasswd:
+  list: |
+    root:PLACEHOLDER_PASSWORD
+  expire: False
+
 users:
   - name: ubuntu
     sudo: ALL=(ALL) NOPASSWD:ALL
@@ -17,8 +23,8 @@ packages:
   - curl
   - vim
   - git
-  - open-iscsi  # Required for Longhorn
-  - nfs-common  # Required for Longhorn
+  - open-iscsi
+  - nfs-common
   - iptables
 
 # 2. Pre-configure Kernel Modules and Sysctl
@@ -35,14 +41,9 @@ write_files:
 
 # 3. Finalize Node Optimization
 runcmd:
-  # Enable cgroups for RPi (crucial for K3s memory management)
   - sed -i 's/$/ cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1/' /boot/firmware/cmdline.txt
-  # Disable Swap (Mandatory for Kubernetes)
   - sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
   - swapoff -a
-  # Disable unnecessary services to save resources
   - systemctl disable --now wpa_supplicant
   - systemctl disable --now atd
-  # Apply sysctl settings immediately
   - sysctl --system
-  # Note: A reboot is required to apply the cmdline.txt changes
