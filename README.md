@@ -97,3 +97,22 @@ This single command will:
 1.  **Prepare nodes**: Disable swap, enable cgroups, and install K8s dependencies.
 2.  **Install K3s**: Deploy the master and join all workers.
 3.  **Bootstrap FluxCD**: Fetch your GitHub token from Bitwarden and initialize GitOps on the cluster.
+
+## Containerized Bootstrap Environment
+To avoid installing tools locally, you can use the provided Docker image which contains all necessary tools (`ansible`, `gh`, `bw`, `helm`, `kubectl`, `flux`).
+
+### 1. Build the image
+```bash
+docker build -t homelab-bootstrap -f Dockerfile.bootstrap .
+```
+
+### 2. Run the container
+Mount your SSH keys and the current directory to the container:
+```bash
+docker run -it --rm \
+  -v $(pwd):/workspace \
+  -v ~/.ssh:/root/.ssh:ro \
+  homelab-bootstrap
+```
+
+Once inside, you can run the bootstrap commands (e.g., `bw login`, `ansible-playbook ...`).
