@@ -72,11 +72,16 @@ I use Github Action to enable a Continues Integration solution to check the new 
 # Bootstrapping
 The requirements to bootstrapping the Kubernetes Cluster on my raspberry pies. The bootstrap process is divided into two steps. First bootstrap the cluster, then deploy the FluxCD Controller to deploy all my Kubernetes Resources.
 
+- [Node Setup Guide](node_setup/readme.md) - **Provisioning**: Flash SD cards and configure static IPs.
+- [Ansible Automation](ansible/README.md) - **Automated Setup**: Install K3s and bootstrap FluxCD.
+- [FluxCD Clusters](clusters/README.md) - **Cluster Config**: Define the GitOps state for production and staging.
+- [Applications Guide](apps/README.md) - **Apps Deployment**: Manage applications via Kustomize and FluxCD.
+
 - [Cluster Bootstrap](docs/cluster_bootstrap.md)
 - [GitOps Bootstrap](docs/gitops_bootstrap.md)
 
 ## Automated Setup (Ansible + Bitwarden)
-A fully automated setup is available to provision the nodes, install K3s, and bootstrap FluxCD.
+A fully automated setup is available to provision the nodes, install K3s, and bootstrap FluxCD. See the [Ansible README](ansible/README.md) for full details.
 
 ### 1. Provision Nodes
 Flash your SD cards and follow the [Node Setup Guide](node_setup/readme.md) to enable **root login** with a preset password and static IP.
