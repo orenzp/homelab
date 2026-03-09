@@ -14,9 +14,10 @@ This repo holds all the configuration and documentation that is needed to set up
 ```mermaid
 graph TD
     subgraph Nodes [Physical Layer: Raspberry Pi 4 4GB]
-        K3S01[k8s-master-01<br/>192.168.1.11]
-        K3S02[k8s-node-01<br/>192.168.1.12]
-        K3S03[k8s-node-02<br/>192.168.1.13]
+        K3S01[k8s-master-01<br/>192.168.1.10]
+        K3S02[k8s-node-01<br/>192.168.1.11]
+        K3S03[k8s-node-02<br/>192.168.1.12]
+        K3S04[k8s-node-03<br/>192.168.1.13]
         SSD[(250GB SSD SATA)] --- K3S01
     end
 

@@ -19,7 +19,7 @@ Copy and rename the example files from this repository to the `system-boot` part
 ### Step B: Configure Static IP
 1.  Copy `network-config.example` to `system-boot/network-config`.
 2.  Edit `network-config`:
-    *   Set the `addresses` to your desired static IP (e.g., `192.168.1.11/24`).
+    *   Set the `addresses` to your desired static IP (e.g., `192.168.1.10/24`).
     *   Ensure the `gateway4` matches your router's IP.
 
 ## 3. First Boot
